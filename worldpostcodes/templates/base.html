@@ -17,6 +17,11 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
+    <link href="/static/lib/jquery-nice-select-1.1.0/css/nice-select.css" rel="stylesheet" />
+    <script src="/static/lib/jquery-nice-select-1.1.0/js/jquery.nice-select.min.js"></script>
+
+
+
     <link href="/static/lib/select2/select2.min.css" rel="stylesheet" />
     <script src="/static/lib/select2/select2.min.js"></script>
 
@@ -36,7 +41,53 @@
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
 
-    <style>#map { height: 90vh; }</style>
+    <style>#map { height: 90vh; }
+
+      .nice-select {
+        z-index: 10000 !important;
+        position: relative;
+      }
+      
+      .nice-select .list {
+        z-index: 10001 !important;
+      }
+
+      .nice-select .list {
+        max-height: 200px;      /* Adjust this as needed */
+        min-height: 100px;      /* Optional: Ensures it's not too short */
+        overflow-y: auto;       /* Enables vertical scrolling */
+      }
+
+      .nice-select .list::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      .nice-select .list::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 3px;
+      }
+
+
+      .select2-container--default .select2-selection--single {
+        height: 46px !important;
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.33;
+        border-radius: 6px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        top: 85% !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 26px !important;
+    }
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #CCC !important;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    }
+
+    </style>
 
 
   </head>
@@ -53,7 +104,7 @@
     <script src="/static/js/popper.min.js"></script>
     <script src="/static/lib/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
     <script src="/static/js/django_ajax.js"></script>
-    <script src="/static/js/site.js"></script>
+    <script src="/static/js/site_.js"></script>
     {% block scripts %}{% endblock scripts %}
   </body>
 </html>

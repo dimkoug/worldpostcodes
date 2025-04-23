@@ -4,10 +4,29 @@
   <div class="container">
     <div class="row py-2">
       <div class="col">
-        <h3>Χάρτης Ταχυδρομικών Κωδικών</h3>
-        <select id="country-filter" style="width: 300px;"></select>
-        <select id="page-selector" style="width: 150px; display: none;"></select>
-        <div id="map" style="height: 90vh;"></div>
+        <h3>Postal Codes</h3>
+        <div class="row">
+          <div class="col">
+            <select id="country-filter" class="form-control select2-container step2-select"></select>
+
+          </div>
+          <div class="col">
+            <select id="page-selector" style="display: none;" class="form-control"></select>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div id="map" style="height: 90vh;"></div>
+          </div>
+
+        </div>
+
+
+
+
+
 
 
         <script>
@@ -78,11 +97,15 @@
           // Populate pagination dropdown
           function populatePageSelector(pageCount) {
             const $pageSelector = $('#page-selector');
+            $pageSelector.niceSelect('destroy');
             $pageSelector.empty().append('<option value="">-- Select Page --</option>');
+          
             for (let i = 1; i <= pageCount; i++) {
               $pageSelector.append(`<option value="${i}">Page ${i}</option>`);
             }
+          
             $pageSelector.show();
+            $pageSelector.niceSelect(); // This reinitializes the plugin
           }
         
           // Page selector change
@@ -102,6 +125,8 @@
                 url: '/api/countries/',
                 dataType: 'json',
                 processResults: function (data) {
+                  $('#page-selector').niceSelect('update');
+                  
                   return { results: data.results };
                 }
               }
@@ -112,10 +137,12 @@
               selectedCountry = $(this).val();
               if (selectedCountry) {
                 markers.clearLayers(); // clear map
+                $('#page-selector').niceSelect('destroy');
                 $('#page-selector').hide(); // reset
                 fetchCountryPages(selectedCountry); // get pages
               } else {
                 markers.clearLayers(); // clear map
+                $('#page-selector').niceSelect('destroy');
                 $('#page-selector').hide();
               }
             });

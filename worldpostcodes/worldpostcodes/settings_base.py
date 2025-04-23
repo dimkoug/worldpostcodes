@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'companies',
     'invitations',
     'postalcodes',
+    'geonames',
 ]
 
 

@@ -35,7 +35,6 @@ dmypy.json
 settings_local.py
 migrations
 *.whl
-management
 *.json
 activate.bat
 .idea/

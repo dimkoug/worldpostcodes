@@ -24,10 +24,10 @@ from invitations.functions import activate_invite
 
 from rest_framework.routers import DefaultRouter
 from postalcodes.views import PostalCodeGeoViewSet, country_list
-
+from geonames.views import RawGeoNameGeoViewSet, geo_country_list
 router = DefaultRouter()
 router.register(r'postalcodes', PostalCodeGeoViewSet, basename='postalcode')
-
+router.register(r'geonames', RawGeoNameGeoViewSet, basename='geoname')
 
 from .views import IndexView, ManageView
 
@@ -35,6 +35,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('api/', include(router.urls)),
     path('api/countries/', country_list, name='country-list'),
+    path('api/geo/countries/', geo_country_list, name='geo-country-list'),
     path('activate/invitation/<str:uidb64>/<str:token>/', activate_invite, name='activate-invite'),
     path('delete/item/', delete_item, name='delete-item'),
     path('model/order/', model_order, name='model-order'),
