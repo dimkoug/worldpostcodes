@@ -1,6 +1,15 @@
 from django.contrib.gis.db import models
 # Create your models here.
 
+class Country(models.Model):
+    name = models.CharField(max_length=255,null=True,blank=True)
+    alpha2 = models.CharField(max_length=255,null=True,blank=True)
+    alpha3 = models.CharField(max_length=255,null=True,blank=True)
+    country_code = models.CharField(max_length=255,null=True,blank=True)
+    region = models.CharField(max_length=255,null=True,blank=True)
+    sub_region = models.CharField(max_length=255,null=True,blank=True)
+    intermediate_region = models.CharField(max_length=255,null=True,blank=True)
+
 
 class RawGeoName(models.Model):
     geonameid = models.BigIntegerField(null=True,blank=True)
@@ -21,3 +30,4 @@ class RawGeoName(models.Model):
     elevation = models.BigIntegerField(null=True,blank=True)
     dem = models.BigIntegerField(null=True,blank=True)
     point = models.GeometryField(srid=4326)
+
