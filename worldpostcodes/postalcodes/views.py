@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
 # Create your views here.
 from rest_framework import viewsets
@@ -6,6 +7,12 @@ from django.http import JsonResponse
 from rest_framework.pagination import PageNumberPagination
 from .models import RawPostalCode
 from .serializers import PostalCodeGeoSerializer
+
+
+class IndexView(TemplateView):
+    template_name = "postalcodes/index.html"
+
+
 
 class PostalCodePagination(PageNumberPagination):
     page_size = 10  # Adjust based on your performance tests

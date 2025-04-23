@@ -1,11 +1,17 @@
 from django.shortcuts import render
-
+from django.views.generic import TemplateView
 # Create your views here.
 from rest_framework import viewsets
 from django.http import JsonResponse
 from rest_framework.pagination import PageNumberPagination
 from .models import RawGeoName
 from .serializers import RawGeoNameGeoSerializer
+
+
+class IndexView(TemplateView):
+    template_name = "geonames/index.html"
+
+
 
 class RawGeoNamePagination(PageNumberPagination):
     page_size = 10  # Adjust based on your performance tests
