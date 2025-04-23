@@ -24,6 +24,10 @@ Quick start
 
 7. Run `python manage.py migrate`
 
-7. Run `python manage.py load`
+8. Data link `https://download.geonames.org/export/zip/allCountries.zip`
 
-8. Start the development server and visit http://127.0.0.1:8000/
+9. Save the txt file inside project root
+
+10. Run `python manage.py load`
+
+11. Start the development server and visit http://127.0.0.1:8000/
