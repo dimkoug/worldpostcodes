@@ -28,10 +28,12 @@ Quick start
 
 9. Data link for geonames `https://download.geonames.org/export/dump/allCountries.zip`
 
-9. Save the txt file inside project root
+10. Countries dataset `https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/all/all.csv`
 
-10. Run `python manage.py load` for postalcodes
+11. Save the txt file inside project root
 
-11. Run `python manage.py load_geonames` for geonames
+12. Run `python manage.py load` for postalcodes
 
-11. Start the development server and visit http://127.0.0.1:8000/
+13. Run `python manage.py load_geonames` for geonames
+
+14. Start the development server and visit http://127.0.0.1:8000/
