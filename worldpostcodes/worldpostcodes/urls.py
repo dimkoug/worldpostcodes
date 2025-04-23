@@ -1,0 +1,62 @@
+"""
+URL configuration for worldpostcodes project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
+from core.utils import delete_item, model_order
+from invitations.functions import activate_invite
+
+from rest_framework.routers import DefaultRouter
+from postalcodes.views import PostalCodeGeoViewSet, country_list
+
+router = DefaultRouter()
+router.register(r'postalcodes', PostalCodeGeoViewSet, basename='postalcode')
+
+
+from .views import IndexView, ManageView
+
+urlpatterns = [
+    path('', IndexView.as_view(), name='index'),
+    path('api/', include(router.urls)),
+    path('api/countries/', country_list, name='country-list'),
+    path('activate/invitation/<str:uidb64>/<str:token>/', activate_invite, name='activate-invite'),
+    path('delete/item/', delete_item, name='delete-item'),
+    path('model/order/', model_order, name='model-order'),
+    path('manage/', ManageView.as_view(), name='manage'),
+    path('accounts/',include('django.contrib.auth.urls')),
+    path('users/', include('users.urls')),
+    path('companies/', include('companies.urls',namespace='companies')),
+    path('invitations/', include('invitations.urls',namespace='invitations')),
+    path('profiles/', include('profiles.urls')),
+    path('admin/', admin.site.urls),
+    path('pages/', include('django.contrib.flatpages.urls')),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    try:
+        import debug_toolbar
+        urlpatterns += [
+            path('__debug__', include(debug_toolbar.urls)),
+        ]
+    except ImportError:
+        pass
