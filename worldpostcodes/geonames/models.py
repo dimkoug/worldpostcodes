@@ -30,4 +30,9 @@ class RawGeoName(models.Model):
     elevation = models.BigIntegerField(null=True,blank=True)
     dem = models.BigIntegerField(null=True,blank=True)
     point = models.GeometryField(srid=4326)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['country_code']),
+        ]
 

@@ -16,3 +16,8 @@ class RawPostalCode(models.Model):
     longitude = models.FloatField()
     accuracy = models.FloatField(null=True,blank=True)
     point = models.GeometryField(srid=4326)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['country_code']),
+        ]
