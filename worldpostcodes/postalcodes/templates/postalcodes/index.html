@@ -4,7 +4,7 @@
   <div class="container">
     <div class="row py-2">
       <div class="col">
-        <h3>Postal Codes</h3>
+        <h3>Postal codes</h3>
         <div class="row">
           <div class="col">
             <select id="country-filter" class="form-control select2-container step2-select"></select>
@@ -31,29 +31,11 @@
 
         <script>
           const map = L.map('map').setView([38.0, 23.7], 6);
-        
+
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18
           }).addTo(map);
         
-          const markers = L.markerClusterGroup();
-          map.addLayer(markers);
-        
-          let selectedCountry = '';
-          let totalPages = 0;
-        
-          // Step 0: Empty map on page load
-          markers.clearLayers();
-        
-          // Step 1 + 2: When user selects country, fetch page count and populate dropdown
-          function fetchCountryPages(countryCode) {
-            const url = `/postalcodes/api/postalcodes/?country_code=${encodeURIComponent(countryCode)}&page=1`;
-            $.getJSON(url, function (response) {
-              totalPages = Math.ceil(response.count / 1000); // assuming 1000 per page
-              populatePageSelector(totalPages);
-            });
-          }
-
           function openClusterGroup() {
             markers.refreshClusters(); // Ensure clusters are recalculated
             markers.eachLayer(function (layer) {
@@ -66,8 +48,17 @@
             });
           }
 
+
+          const markers = L.markerClusterGroup({
+            chunkedLoading: true,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: true,
+            zoomToBoundsOnClick: true
+          });
+          map.addLayer(markers);
         
-          // Step 3: On page change, clear and load that page
+          let selectedCountry = '';
+        
           function loadPage(countryCode, page) {
             markers.clearLayers();
             let url = `/postalcodes/api/postalcodes/?country_code=${encodeURIComponent(countryCode)}&page=${page}`;
@@ -101,7 +92,15 @@
               }
             });
           }
-          // Populate pagination dropdown
+        
+          function fetchCountryPages(countryCode) {
+            const url = `/postalcodes/api/postalcodes/?country_code=${encodeURIComponent(countryCode)}&page=1`;
+            $.getJSON(url, function (response) {
+              const totalPages = Math.ceil(response.count / 1000);
+              populatePageSelector(totalPages);
+            });
+          }
+        
           function populatePageSelector(pageCount) {
             const $pageSelector = $('#page-selector');
             $pageSelector.niceSelect('destroy');
@@ -115,15 +114,6 @@
             $pageSelector.niceSelect(); // This reinitializes the plugin
           }
         
-          // Page selector change
-          $('#page-selector').on('change', function () {
-            const selectedPage = $(this).val();
-            if (selectedPage) {
-              loadPage(selectedCountry, selectedPage);
-            }
-          });
-        
-          // Setup Select2 country dropdown
           $(document).ready(function () {
             $('#country-filter').select2({
               placeholder: 'Choose a country',
@@ -132,27 +122,32 @@
                 url: '/postalcodes/api/countries/',
                 dataType: 'json',
                 processResults: function (data) {
-                  $('#page-selector').niceSelect('update');
-                  
                   return { results: data.results };
                 }
               }
             });
         
-            // Country selection
             $('#country-filter').on('change', function () {
               selectedCountry = $(this).val();
               if (selectedCountry) {
-                markers.clearLayers(); // clear map
-                $('#page-selector').niceSelect('destroy');
-                $('#page-selector').hide(); // reset
-                fetchCountryPages(selectedCountry); // get pages
+                markers.clearLayers();
+                $('#page-selector').hide();
+                fetchCountryPages(selectedCountry);
               } else {
-                markers.clearLayers(); // clear map
-                $('#page-selector').niceSelect('destroy');
+                markers.clearLayers();
                 $('#page-selector').hide();
               }
             });
+        
+            $('#page-selector').on('change', function () {
+              const selectedPage = $(this).val();
+              if (selectedPage) {
+                loadPage(selectedCountry, selectedPage);
+              }
+            });
+        
+            // Optionally preload all countries without filtering
+            // loadPage('', 1);
           });
         </script>
 

@@ -40,12 +40,15 @@ class RawGeoNameGeoViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 def geo_country_list(request):
-    countries = (
-        RawGeoName.objects
-        .exclude(country_code__isnull=True)
-        .values_list('country_code', flat=True)
-        .distinct()
-        .order_by('country_code')
-    )
+    countries = cache.get('countries')
+    if not countries:
+        countries = (
+            RawGeoName.objects
+            .exclude(country_code__isnull=True)
+            .values_list('country_code', flat=True)
+            .distinct()
+            .order_by('country_code')
+        )
+        cache.set('countries', countries, 86400)
     results = [{"id": code, "text": code} for code in countries]
     return JsonResponse({"results": results})
