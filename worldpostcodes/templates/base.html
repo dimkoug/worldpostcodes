@@ -109,14 +109,19 @@
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}"
         {% block body_attrs %}{% endblock %}>
 {% include 'navbar.html' %}
-<main class="container-fluid">
+<main class="container">
     <div class="row py-2">
         <div class="col-12">
             {% include 'messages.html' %}
         </div>
     </div>
+    <div class="row py-2">
+        <div class="col-12">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
 </main>
-{% block content %}{% endblock %}
+
 <script src="/static/js/popper.min.js"></script>
 <script src="/static/lib/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
 <script src="/static/js/django_ajax.js"></script>
