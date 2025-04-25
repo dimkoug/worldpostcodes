@@ -3,6 +3,7 @@ from django.contrib.gis.db import models
 
 
 class RawPostalCode(models.Model):
+    country = models.CharField(max_length=255, null=True, blank=True)
     country_code = models.CharField(max_length=255,null=True,blank=True)
     postal_code = models.CharField(max_length=255,null=True,blank=True)
     place_name = models.CharField(max_length=255,null=True,blank=True)

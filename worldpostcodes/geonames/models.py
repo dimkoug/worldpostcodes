@@ -20,6 +20,7 @@ class RawGeoName(models.Model):
     longitude = models.FloatField()
     feature_class = models.CharField(max_length=255,null=True,blank=True)
     feature_code = models.CharField(max_length=255,null=True,blank=True)
+    country = models.CharField(max_length=255,null=True,blank=True)
     country_code = models.CharField(max_length=255,null=True,blank=True)
     cc2 = models.CharField(max_length=255,null=True,blank=True)
     admin1_code = models.CharField(max_length=255,null=True,blank=True)
